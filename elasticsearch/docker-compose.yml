@@ -1,0 +1,56 @@
+version: '3'
+services:
+  elasticsearch:
+    restart: always
+    image: elasticsearch:7.14.2
+    container_name: elasticsearch
+    privileged: true
+    volumes:
+      - /data/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      resources:
+        reservations:
+          memory: 512M
+        limits:
+          memory: 1024M
+    networks:
+      - custom_net
+
+  elastichd:
+    restart: always
+    image: containerize/elastichd:latest
+    container_name: elasticsearch-hd
+    privileged: true
+    ports:
+      - "9800:9800"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      resources:
+        reservations:
+          memory: 256M
+        limits:
+          memory: 512M
+    networks:
+      - custom_net
+    depends_on:
+      - elasticsearch
+    links:
+      - "elasticsearch:demo"
+
+networks:
+  custom_net:
+    external:
+      name: app_net

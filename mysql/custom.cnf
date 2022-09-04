@@ -1,0 +1,8 @@
+[mysqld]
+max_allowed_packet=1073741824
+character-set-server=utf8mb4
+collation-server=utf8mb4_general_ci
+max_connections=3000
+server_id=1
+log_bin
+default-time-zone='+8:00'

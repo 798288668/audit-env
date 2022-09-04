@@ -1,0 +1,51 @@
+version: '3'
+services:
+  audit-system:
+    image: registry.cn-hangzhou.aliyuncs.com/fengcheng/audit-system:latest
+    container_name: audit-system
+    restart: always
+    environment:
+      - JAVA_OPTS=-XX:MaxRAM=2048m
+      - CONFIG_ENV=${CONFIG_ENV}
+    volumes:
+      - /data/nginx/uploads/:/data/uploads/
+    ports:
+      - "64001:64001"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      resources:
+        reservations:
+          memory: 1024M
+        limits:
+          memory: 2048M
+    networks:
+      - custom_net
+
+  audit-system-html:
+    image: registry.cn-hangzhou.aliyuncs.com/fengcheng/audit-system-html:last
+    container_name: audit-system-html
+    restart: always
+    ports:
+      - "64000:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+        limits:
+          memory: 256M
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+    external:
+      name: app_net

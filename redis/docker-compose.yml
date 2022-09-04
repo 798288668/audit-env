@@ -1,0 +1,29 @@
+version: '3'
+services:
+  redis:
+    restart: always
+    container_name: redis
+    image: redis
+    command: redis-server /data/redis/redis.conf
+    volumes:
+      - /data/redis:/data/redis
+    ports:
+      - "6379:6379"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    deploy:
+      resources:
+        reservations:
+          memory: 256M
+        limits:
+          memory: 512M
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+   external:
+      name: app_net
