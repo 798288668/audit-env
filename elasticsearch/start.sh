@@ -11,4 +11,3 @@ docker-compose --compatibility pull
 docker-compose --compatibility up -d
 docker image prune -f
 echo "start services success!"
-

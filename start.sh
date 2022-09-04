@@ -8,5 +8,4 @@ sh dev/docker.sh
 sh mysql/start.sh
 sh redis/start.sh
 sh app/start.sh ${username} ${password}
-echo 'install success '
-
+echo 'install success'
